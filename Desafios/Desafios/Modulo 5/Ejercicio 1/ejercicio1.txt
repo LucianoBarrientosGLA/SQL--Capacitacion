@@ -1,0 +1,13 @@
+use bonus_track;
+
+select artista, titulo from ultimos_lanzamientos where ano = (select max(ano) from ultimos_lanzamientos) order by artista, titulo;
+
+select titulo from top_spotify where permanencia = (select max(permanencia) from top_spotify) and artista = 'Lady Gaga' order by titulo;
+
+select titulo, artista,
+case
+when genero like '%Pop%' THEN 'Pop'
+when genero like '%Electro%' or genero like '%House%' then 'Electrónica'
+else 'Otro'
+end as tipo from top_spotify order by artista, titulo;
+

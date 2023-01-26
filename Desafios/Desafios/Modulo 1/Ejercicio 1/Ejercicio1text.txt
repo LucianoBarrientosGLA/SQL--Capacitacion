@@ -1,0 +1,22 @@
+create database bonus_track;
+
+use bonus_track;
+
+/*create table agenda(
+IDcontacto int primary key,
+nombre varchar(20) not null,
+apellido varchar(15) not null,
+domicilio varchar(50),
+teléfono int not null
+);*/
+
+show tables from bonus_track;
+
+select * from agenda;
+
+alter table agenda add mail varchar(50);
+
+insert into agenda(IDcontacto , nombre , apellido , teléfono)
+values(1, "Luciano", "Barrientos", "1123456789");
+
+select * from agenda;

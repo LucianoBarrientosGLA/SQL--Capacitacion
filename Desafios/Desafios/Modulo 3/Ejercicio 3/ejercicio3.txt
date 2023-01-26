@@ -1,0 +1,15 @@
+use libreria;
+
+select concat(apellido, ', ', nombre) empleado, year(fecha_ingreso) as ingreso,timestampdiff(year,fecha_ingreso, curdate()) as antiguedad
+from empleados order by ingreso desc; 
+
+select min(precio) 'Menor Precio' from libros;
+
+select min(precio) 'Menor Precio', max(precio) 'Mayor Precio' from libros;
+
+select min(precio) 'Menor Precio', max(precio) 'Mayor Precio', round(avg(precio), 2) 'Precio Promedio' from libros;
+
+select categoria, min(precio)'Menor Precio', max(precio)'Mayor Precio', round(avg(precio),2) 'Precio Promedio' from libros group by categoria; 
+
+select categoria, min(precio)'Menor Precio', max(precio)'Mayor Precio', round(avg(precio),2) 'Precio Promedio' from libros group by categoria 
+having categoria <> 'Sin Asignar';

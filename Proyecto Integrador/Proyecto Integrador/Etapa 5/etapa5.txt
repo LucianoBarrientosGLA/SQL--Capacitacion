@@ -1,0 +1,532 @@
+-- --------------------------------------------------------------------------
+-- TRABAJO INTEGRADOR 
+-- --------------------------------------------------------------------------
+-- ETAPA 1.1
+
+create database laboratorio;
+
+use laboratorio;
+
+create table facturas (
+letra char,
+numero int,
+ clienteid int,
+ articuloid int,
+ fecha date,
+ monto double,
+ primary key(letra, numero)
+);
+
+create table articulos (
+articuloid int primary key,
+ nombre varchar(50),
+ precio double,
+ stock int);
+ 
+ create table clientes (
+clienteid int primary key,
+ nombre varchar(25),
+ apellido varchar(25),
+ cuit char(16),
+ direccion varchar(50),
+ comentarios varchar(50)
+);
+
+show databases;
+
+show tables;
+# show tables;
+
+desc clientes; 
+-- --------------------------------------------------------------------------
+-- ETAPA 1.2
+
+alter table facturas
+change clienteid idcliente int,
+change articuloid idarticulo int,
+modify monto double unsigned;
+
+
+alter table articulos
+change articuloid idarticulo int,
+modify nombre varchar(75),
+modify precio double unsigned not null,
+modify stock int unsigned not null;
+
+alter table clientes
+change clienteid idcliente int,
+modify nombre varchar(30) not null,
+modify apellido varchar(35) not null,
+change comentarios observaciones varchar(255);
+-- --------------------------------------------------------------------------
+-- ETAPA 1.3
+
+insert into facturas
+values ('a', 28, 14, 335, '2021-03-18', 1589.50),
+('a', 39, 26, 157, '2021-04-12', 979.75),
+('b', 8, 17, 95, '2021-04-25', 513.35),
+('b', 12, 5, 411, '2021-05-03', 2385.70),
+('b', 19, 50, 157, '2021-05-26', 979.75);
+
+
+insert into articulos
+values (95, 'webcam con micrófono plug & play', 513.35, 39),
+(157, 'apple airpods pro', 979.75, 152),
+(335, 'lavasecarropas automático samsung', 1589.50, 12),
+(411, 'gloria trevi / gloria / cd+dvd', 2385.70, 2);
+
+
+insert into clientes
+values (5, 'Santiago', 'González', '23-24582359-9', 'Uriburu 558 - 7ºa', 'Vip'),
+(14, 'Gloria', 'Fernández', '23-35965852-5', 'Constitución 323', 'Gba'),
+ (17, 'Gonzalo', 'López', '23-33587416-0', 'Arias 2624', 'Gba'),
+ (26, 'Carlos', 'García', '23-42321230-9', 'Pasteur 322 - 2ºc', 'Vip'),
+ (50, 'Micaela', 'Altieri', '23-22885566-5', 'Santamarina 1255', 'Gba');
+-- --------------------------------------------------------------------------
+-- ETAPA 2.1
+
+alter table clientes_neptuno
+modify IDcliente varchar(5) primary key,
+modify NombreCompania varchar(100) not null,
+modify Pais varchar(15) not null;
+
+rename table clientes to contactos;
+
+alter table clientes
+modify cod_cliente varchar(7) primary key,
+modify empresa varchar(100) not null,
+modify ciudad varchar(25) not null,
+modify telefono int unsigned,
+modify responsable varchar(30);
+
+alter table pedidos
+modify numero_pedido int unsigned primary key,
+modify codigo_cliente varchar(7) not null,
+modify fecha_pedido date not null,
+modify forma_pago enum('contado', 'aplazado', 'tarjeta'),
+modify enviado enum ('si', 'no');
+
+alter table productos
+modify cod_producto int unsigned primary key,
+modify seccion varchar(20) not null,
+modify nombre varchar(40) not null,
+modify importado enum('verdadero', 'falso') not null,
+modify origen varchar(25) not null,
+modify dia int unsigned not null,
+modify mes int unsigned not null,
+modify ano int unsigned not null;
+-- --------------------------------------------------------------------------
+-- ETAPA 2.2
+-- Importar Scripts
+-- --------------------------------------------------------------------------
+-- ETAPA 2.3
+
+select * from clientes_neptuno;
+
+select nombrecompania, ciudad, pais from clientes_neptuno;
+
+select nombrecompania, ciudad, pais from clientes_neptuno order by pais;
+
+select nombrecompania, ciudad, pais from clientes_neptuno order by pais, ciudad;
+
+select nombrecompania, ciudad, pais from clientes_neptuno order by pais, ciudad limit 10;
+
+select nombrecompania, ciudad, pais from clientes_neptuno order by pais, ciudad limit 5 offset 10;
+-- --------------------------------------------------------------------------
+-- ETAPA 2.4
+
+select * from nacimientos where nacionalidad = 'extranjera';
+
+select * from nacimientos where edad_madre < 18 order by edad_madre;
+
+select * from nacimientos where edad_madre = edad_padre;
+
+select * from nacimientos where edad_padre-edad_madre > 40;
+
+select * from clientes_neptuno where pais = 'argentina';
+
+select * from clientes_neptuno where pais <> 'argentina' order by pais;
+
+select * from nacimientos where semanas < 20 order by semanas desc;
+
+select * from nacimientos where sexo = 'femenino' and nacionalidad = 'extranjera' and estado_civil_madre = 'soltera' and edad_madre > 40;
+
+select * from clientes_neptuno where pais = 'argentina' or pais ='venezuela' or pais = 'brasil' order by pais, ciudad;
+
+select * from nacimientos where semanas between 20 and 25 order by semanas;
+
+select * from nacimientos where comuna in (1101, 3201, 5605, 8108, 9204, 13120, 15202) order by comuna;
+
+select * from clientes_neptuno where idcliente like 'c%';
+
+select * from clientes_neptuno where ciudad like 'b____';
+
+select * from nacimientos where hijos_total > 10;
+-- --------------------------------------------------------------------------
+-- ETAPA 3.1
+-- BACKUP LABORATORIO
+
+drop database laboratorio;
+
+-- RESTAURAR LABORATORIO
+-- --------------------------------------------------------------------------
+-- ETAPA 3.2
+use laboratorio;
+
+select IDcliente, NombreCompania, concat(Direccion, ' - ', Ciudad, ' - ', Pais) as ubicacion from clientes_neptuno;
+
+select IDcliente, NombreCompania, concat_ws(' - ', Direccion, Ciudad, Pais) as ubicacion from clientes_neptuno;
+
+select IDcliente, upper(NombreCompania) as Empresa, concat_ws(' - ', Direccion, Ciudad, Pais) as ubicacion from clientes_neptuno;
+
+select lower(IDcliente) as codigo, upper(NombreCompania) as Empresa, concat_ws(' - ', Direccion, Ciudad, Pais) as ubicacion from clientes_neptuno;
+
+select fecha, left(sexo, 1) as sexo, left(tipo_parto, 1) as tipo from nacimientos;
+
+select *, upper(concat(left(ciudad, 1), left(pais, 1), right(pais, 2))) as codigo from clientes_neptuno;
+
+select sexo, fecha, tipo_parto, atenc_part, local_part, substring(fecha, 4, 2) as mes from nacimientos order by mes;
+
+select sexo, fecha, tipo_parto, replace(nacionalidad, 'chilena', 'ciudadana') as nacionalidad from nacimientos;
+-- --------------------------------------------------------------------------
+-- ETAPA 3.3
+
+select * from pedidos_neptuno where year(fechapedido) = 1998;
+
+select * from pedidos_neptuno where month(fechapedido) between 8 and 9 and year(fechapedido) = 1997;
+
+select * from pedidos_neptuno where day(fechapedido) = 1;
+
+select *, datediff(curdate(), fechapedido) as 'dias transcurridos' from pedidos_neptuno;
+
+select *, datediff(curdate(), fechapedido) as 'dias transcurridos', dayname(fechapedido) as dia from pedidos_neptuno;
+
+select *, datediff(curdate(), fechapedido) as 'dias transcurridos', dayname(fechapedido) as dia, dayofyear(fechapedido) as 'dia del año' from
+pedidos_neptuno;
+
+select *, datediff(curdate(), fechapedido) as 'dias transcurridos', dayname(fechapedido) as dia, dayofyear(fechapedido) as 'dia del año',
+monthname(fechapedido) as 'mes'from pedidos_neptuno;
+
+select *, datediff(curdate(), fechapedido) as 'dias transcurridos', dayname(fechapedido) as dia, dayofyear(fechapedido) as 'dia del año',
+monthname(fechapedido) as 'mes', adddate(fechapedido, interval 30 day) as 'primer vencimiento' from pedidos_neptuno;
+
+select *, datediff(curdate(), fechapedido) as 'dias transcurridos', dayname(fechapedido) as dia, dayofyear(fechapedido) as 'dia del año',
+monthname(fechapedido) as 'mes', adddate(fechapedido, interval 30 day) as 'primer vencimiento',
+adddate(fechapedido, interval 2 month) as 'segundo vencimiento' from pedidos_neptuno;
+-- --------------------------------------------------------------------------
+-- ETAPA 3.4
+
+select *, round(cargo * 0.21, 2) as iva from pedidos_neptuno;
+
+select *, round(cargo * 0.21, 2) as iva, round(cargo * 1.21, 2) as neto from pedidos_neptuno;
+
+select *, round(cargo * 0.21, 2) as iva, round(cargo * 1.21, 2) as neto, floor(round(cargo * 1.21, 2)) as 'redondeo a favor cliente'
+from pedidos_neptuno;
+
+select *, round(cargo * 0.21, 2) as iva, round(cargo * 1.21, 2) as neto, floor(round(cargo * 1.21, 2)) as 'redondeo a favor cliente',
+ceil(round(cargo * 1.21, 2)) as 'redondeo a favor empresa'from pedidos_neptuno;
+-- --------------------------------------------------------------------------
+-- ETAPA 3.5
+
+select count(*) from pedidos_neptuno;
+
+select count(transportista) as 'entregas speedy express'from pedidos_neptuno where transportista = 'speedy express';
+
+select count(empleado) ventas from pedidos_neptuno where empleado like 'c%';
+
+select round(avg(preciounidad), 2) 'precio promedio' from productos_neptuno;
+
+select round(avg(preciounidad), 2) 'precio promedio', min(preciounidad) 'precio minimo'from productos_neptuno;
+
+select round(avg(preciounidad), 2) 'precio promedio', min(preciounidad) 'precio minimo', max(preciounidad) 'precio maximo'
+from productos_neptuno;
+
+select nombrecategoria as categoria, max(preciounidad) as 'precio maximo' from productos_neptuno group by categoria;
+
+select transportista, count(idpedido) as entregas from pedidos_neptuno group by transportista;
+
+select sexo, count(sexo) as nacimientos from nacimientos group by sexo;
+
+select nombrecompania as cliente, round(sum(cargo), 2) as 'total gastos' from pedidos_neptuno group by cliente;
+
+select seccion, count(seccion) as cantidad from productos group by seccion order by cantidad desc;
+
+select nombrecompania as cliente, round(sum(cargo), 2) as 'total gastos' from pedidos_neptuno group by cliente;
+
+select seccion, count(seccion) as cantidad from productos group by seccion order by cantidad desc;
+
+select year(fechapedido) as 'año', monthname(fechapedido) as mes, count(idpedido) as ventas from pedidos_neptuno group by año, mes
+order by año, month(fechapedido);
+
+select empleado, round(sum(cargo), 2) as facturacion, round(avg(cargo), 2) as promedio, max(cargo) as 'mejor venta', min(cargo) as 'peor venta',
+count(cargo) as ventas from pedidos_neptuno group by empleado;
+-- --------------------------------------------------------------------------
+-- ETAPA 4.1
+
+create table varones
+select * from nacimientos where sexo = 'masculino';
+
+create table mujeres
+select * from nacimientos where sexo = 'femenino';
+
+create table indeterminados
+select * from nacimientos where sexo = 'indeterminado';
+
+drop table nacimientos;
+-- --------------------------------------------------------------------------
+-- ETAPA 4.2
+
+set sql_safe_updates = 0;
+update clientes_neptuno
+set pais = 'usa' where pais = 'estados unidos';
+select * from clientes_neptuno;
+
+update clientes_neptuno
+set nombrecompania = upper(nombrecompania);
+select * from clientes_neptuno;
+
+update clientes_neptuno
+set ciudad = upper(ciudad), pais = upper(pais);
+select * from clientes_neptuno;
+
+alter table empleados add nombre_empleado varchar(30) after idmpleado;
+update empleados
+set nombre_empleado = concat(apellidos, ', ', nombre);
+alter table empleados drop apellidos, drop nombre;
+select * from empleados;
+
+alter table clientes add tipo varchar(3);
+update clientes set tipo = 'vip' where ciudad = 'madrid';
+select * from clientes;
+
+alter table clientes modify telefono varchar(20);
+update clientes
+set telefono = concat('+34-', telefono) where telefono is not null;
+select * from clientes;
+
+alter table productos add fecha date;
+update productos set fecha = concat(ano, '-', mes, '-', dia);
+alter table productos drop dia, drop mes, drop ano;
+update productos set origen = 'españa'
+where origen = 'espana';
+select * from productos;
+
+alter table productos_neptuno modify suspendido varchar(2);
+update productos_neptuno
+set suspendido = if(suspendido = '0', 'no', 'si');
+select * from productos_neptuno;
+
+update productos_neptuno set preciounidad = round(preciounidad * 1.1, 2);
+select * from productos_neptuno;
+
+update proveedores set region = null where region = '';
+select * from proveedores;
+
+update clientes
+set ciudad = concat(upper(left(ciudad, 1)),
+lower(substring(ciudad, 2, length(ciudad))));
+select * from clientes;
+
+create table productos_suspendidos
+select * from productos_neptuno
+where suspendido = 'si';
+select * from productos_suspendidos;
+-- --------------------------------------------------------------------------
+-- ETAPA 4.3
+
+update productos_neptuno set suspendido = 'si'
+where idproveedor = 1;
+insert into productos_suspendidos (idproducto,
+nombreproducto, nombrecontacto, nombrecategoria, preciounidad, suspendido, idproveedor)
+select idproducto, nombreproducto, nombrecontacto, nombrecategoria, preciounidad,
+suspendido, idproveedor
+from productos_neptuno
+where suspendido = 'si';
+delete from productos_neptuno where suspendido = 'si';
+-- --------------------------------------------------------------------------
+-- ETAPA 4.4
+
+set sql_safe_updates = 0;
+delete from productos_neptuno
+where suspendido = 'si';
+-- --------------------------------------------------------------------------
+-- ETAPA 5.1
+
+select * from productos_neptuno
+where preciounidad >
+(select avg(preciounidad) from productos_neptuno)
+order by nombreproducto;
+
+select * from productos_neptuno
+where preciounidad >
+(select max(preciounidad) from productos_suspendidos)
+order by preciounidad desc;
+
+select * from varones
+where semanas <
+(select min(semanas) from indeterminados);
+
+select * from productos_neptuno
+where left(nombreproducto, 1) =
+(select left(nombre_empleado, 1) from empleados
+where idempleado = 8)
+order by nombreproducto;
+
+select * from productos_neptuno
+where idproveedor =
+(select max(idproveedor) from proveedores)
+order by nombreproducto;
+
+select * from productos_neptuno
+where nombrecategoria = 'bebidas' and
+preciounidad >
+(select max(preciounidad) from productos_neptuno
+where nombrecategoria = 'condimentos');
+
+select * from mujeres
+where edad_madre >
+(select max(edad_madre) from varones);
+
+select * from productos_neptuno
+where nombrecategoria = 'bebidas' and
+preciounidad >
+(select max(preciounidad) from productos_neptuno
+where nombrecategoria = 'condimentos');
+-- --------------------------------------------------------------------------
+-- ETAPA 5.2
+
+select idcliente, nombrecompania, ciudad, pais,
+case
+when pais in ('argentina', 'brasil', 'venezuela') then 'america del sur'
+when pais in ('méxico', 'usa', 'canadá') then 'america del norte'
+else 'europa'
+end as continente
+from clientes_neptuno
+order by continente, pais;
+
+select idpedido, nombrecompania, fechapedido, cargo,
+case
+when cargo > 700 then 'excelente'
+when cargo > 500 then 'muy bueno'
+when cargo > 250 then 'bueno'
+when cargo > 50 then 'regular'
+else 'malo'
+end as 'evaluacion'
+from pedidos_neptuno
+order by cargo desc;
+
+select idproducto, nombreproducto, nombrecategoria, preciounidad,
+case
+when preciounidad > 100 then 'deluxe'
+when preciounidad > 10 then 'regular'
+else 'economico'
+end as tipo
+from productos_neptuno
+order by preciounidad desc;
+-- --------------------------------------------------------------------------
+-- ETAPA 5.3
+
+select * from varones where semanas < 20
+union
+select * from mujeres where semanas < 20
+union
+select * from indeterminados where semanas < 20;
+
+select * from varones where fecha like '%/09/%' and nacionalidad =
+'chilena' and estado_civil_madre = 'casada' and semanas > 40
+union
+select * from mujeres where fecha like '%/09/%' and nacionalidad =
+'chilena' and estado_civil_madre = 'casada' and semanas > 40
+union
+select * from indeterminados where fecha like '%/09/%' and nacionalidad =
+'chilena' and estado_civil_madre = 'casada' and semanas > 40;
+
+select *from productos_neptuno
+where preciounidad > 80
+union
+select * from productos_suspendidos
+where preciounidad > 80
+order by nombreproducto;
+
+select *, 'a la venta' as condicion from productos_neptuno
+where preciounidad > 80
+union
+select *, 'suspendido' as condicion from productos_suspendidos
+where preciounidad > 80
+order by nombreproducto;
+
+select * from productos_neptuno
+where nombrecategoria = 'bebidas'
+union
+select * from productos_suspendidos
+where nombrecategoria = 'bebidas'
+order by nombreproducto;
+
+insert into productos_suspendidos
+(idproducto, nombreproducto, nombrecontacto, nombrecategoria, preciounidad,
+suspendido, idproveedor)
+select idproducto, nombreproducto, nombrecontacto, nombrecategoria,
+preciounidad, suspendido, idproveedor
+from productos_neptuno
+where idproducto = 43 ;
+
+select * from productos_neptuno where nombrecategoria = 'bebidas'
+union
+select * from productos_suspendidos where nombrecategoria = 'bebidas'
+order by nombreproducto;
+
+select * from productos_neptuno where nombrecategoria = 'bebidas'
+union all
+select * from productos_suspendidos where nombrecategoria = 'bebidas'
+order by nombreproducto;
+
+set sql_safe_updates = 0;
+delete from productos_suspendidos where idproducto = 43;
+-- --------------------------------------------------------------------------
+-- ETAPA 5.4
+
+create table equipos (equipo varchar(20) primary key);
+
+insert into equipos
+values ('argentina'), ('brasil'), ('chile'), ('paraguay'), ('uruguay'),
+('colombia'), ('ecuador'), ('perú'), ('bolivia'), ('venezuela');
+
+select * from equipos l cross join equipos v
+where l.equipo <> v.equipo
+order by l.equipo;
+-- --------------------------------------------------------------------------
+-- ETAPA 5.5
+select pn.nombrecontacto, idproducto, nombreproducto, preciounidad
+from proveedores p join productos_neptuno pn
+on p.idproveedor = pn.idproveedor
+order by pn.nombrecontacto, nombreproducto;
+
+select pn.nombrecontacto, idproducto, nombreproducto, preciounidad
+from proveedores p, productos_neptuno pn
+where p.idproveedor = pn.idproveedor
+order by pn.nombrecontacto, nombreproducto;
+
+select empresa, numero_pedido, fecha_pedido, forma_pago
+from clientes c join pedidos p
+on c.cod_cliente = p.codigo_cliente
+order by empresa;
+
+select empresa, numero_pedido, fecha_pedido, forma_pago
+from clientes c left join pedidos p
+on c.cod_cliente = p.codigo_cliente
+where p.numero_pedido is null
+order by empresa;
+
+select empresa
+from clientes c left join pedidos p
+on c.cod_cliente = p.codigo_cliente
+where p.numero_pedido is null
+order by empresa;
+
+select * from proveedores p left join productos_neptuno pn
+on p.idproveedor = pn.idproveedor
+where pn.idproducto is null;
+
+select * from proveedores p right join productos_neptuno pn
+on p.idproveedor = pn.idproveedor
+where p.idproveedor is null;

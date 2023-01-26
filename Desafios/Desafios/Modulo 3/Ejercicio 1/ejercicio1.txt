@@ -1,0 +1,18 @@
+use bonus_track;
+
+select concat(artista, ' - ', titulo) cancion, genero from top_spotify order by cancion;
+
+select concat_ws(artista, ' - ', titulo) cancion, genero from top_spotify order by cancion;
+
+select concat(artista, ' - ', titulo) cancion, upper(genero) genero from top_spotify order by cancion;
+
+select concat_ws(' - ', artista, titulo) cancion,
+upper(genero) genero, year(curdate()) - ano años
+from top_spotify
+order by cancion;
+
+select count(*) canciones from top_spotify;
+
+select ano, count(*) canciones from top_spotify group by ano;
+ 
+select ano, count(*) canciones from top_spotify group by ano having canciones >= 50;

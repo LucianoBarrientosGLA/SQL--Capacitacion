@@ -1,0 +1,17 @@
+use bonus_track;
+
+select * from top_spotify;
+
+select ARTISTA, TITULO, GENERO from top_spotify;
+
+select ARTISTA, TITULO, GENERO from top_spotify order by ARTISTA, TITULO limit 10;
+
+select * from top_spotify order by ARTISTA, TITULO limit 5 offset 10;
+
+select * from top_spotify where ARTISTA = "MADONNA";
+
+select * from top_spotify where GENERO = "Pop" order by TITULO;
+
+select * from top_spotify where GENERO = "Pop" and ANO = "2015" order by ARTISTA, TITULO;
+
+select * from top_spotify where GENERO = "Dance Pop" and ANO < 2011 order by TITULO;

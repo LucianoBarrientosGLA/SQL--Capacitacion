@@ -1,0 +1,167 @@
+-- --------------------------------------------------------------------------
+-- TRABAJO INTEGRADOR 
+-- --------------------------------------------------------------------------
+-- ETAPA 1.1
+
+create database laboratorio;
+
+use laboratorio;
+
+create table facturas (
+letra char,
+numero int,
+ clienteid int,
+ articuloid int,
+ fecha date,
+ monto double,
+ primary key(letra, numero)
+);
+
+create table articulos (
+articuloid int primary key,
+ nombre varchar(50),
+ precio double,
+ stock int);
+ 
+ create table clientes (
+clienteid int primary key,
+ nombre varchar(25),
+ apellido varchar(25),
+ cuit char(16),
+ direccion varchar(50),
+ comentarios varchar(50)
+);
+
+show databases;
+
+show tables;
+# show tables;
+
+desc clientes; 
+-- --------------------------------------------------------------------------
+-- ETAPA 1.2
+
+alter table facturas
+change clienteid idcliente int,
+change articuloid idarticulo int,
+modify monto double unsigned;
+
+
+alter table articulos
+change articuloid idarticulo int,
+modify nombre varchar(75),
+modify precio double unsigned not null,
+modify stock int unsigned not null;
+
+alter table clientes
+change clienteid idcliente int,
+modify nombre varchar(30) not null,
+modify apellido varchar(35) not null,
+change comentarios observaciones varchar(255);
+-- --------------------------------------------------------------------------
+-- ETAPA 1.3
+
+insert into facturas
+values ('a', 28, 14, 335, '2021-03-18', 1589.50),
+('a', 39, 26, 157, '2021-04-12', 979.75),
+('b', 8, 17, 95, '2021-04-25', 513.35),
+('b', 12, 5, 411, '2021-05-03', 2385.70),
+('b', 19, 50, 157, '2021-05-26', 979.75);
+
+
+insert into articulos
+values (95, 'webcam con micrófono plug & play', 513.35, 39),
+(157, 'apple airpods pro', 979.75, 152),
+(335, 'lavasecarropas automático samsung', 1589.50, 12),
+(411, 'gloria trevi / gloria / cd+dvd', 2385.70, 2);
+
+
+insert into clientes
+values (5, 'Santiago', 'González', '23-24582359-9', 'Uriburu 558 - 7ºa', 'Vip'),
+(14, 'Gloria', 'Fernández', '23-35965852-5', 'Constitución 323', 'Gba'),
+ (17, 'Gonzalo', 'López', '23-33587416-0', 'Arias 2624', 'Gba'),
+ (26, 'Carlos', 'García', '23-42321230-9', 'Pasteur 322 - 2ºc', 'Vip'),
+ (50, 'Micaela', 'Altieri', '23-22885566-5', 'Santamarina 1255', 'Gba');
+-- --------------------------------------------------------------------------
+-- ETAPA 2.1
+
+alter table clientes_neptuno
+modify IDcliente varchar(5) primary key,
+modify NombreCompania varchar(100) not null,
+modify Pais varchar(15) not null;
+
+rename table clientes to contactos;
+
+alter table clientes
+modify cod_cliente varchar(7) primary key,
+modify empresa varchar(100) not null,
+modify ciudad varchar(25) not null,
+modify telefono int unsigned,
+modify responsable varchar(30);
+
+alter table pedidos
+modify numero_pedido int unsigned primary key,
+modify codigo_cliente varchar(7) not null,
+modify fecha_pedido date not null,
+modify forma_pago enum('contado', 'aplazado', 'tarjeta'),
+modify enviado enum ('si', 'no');
+
+alter table productos
+modify cod_producto int unsigned primary key,
+modify seccion varchar(20) not null,
+modify nombre varchar(40) not null,
+modify importado enum('verdadero', 'falso') not null,
+modify origen varchar(25) not null,
+modify dia int unsigned not null,
+modify mes int unsigned not null,
+modify ano int unsigned not null;
+-- --------------------------------------------------------------------------
+-- ETAPA 2.2
+-- Importar Scripts
+-- --------------------------------------------------------------------------
+-- ETAPA 2.3
+
+select * from clientes_neptuno;
+
+select nombrecompania, ciudad, pais from clientes_neptuno;
+
+select nombrecompania, ciudad, pais from clientes_neptuno order by pais;
+
+select nombrecompania, ciudad, pais from clientes_neptuno order by pais, ciudad;
+
+select nombrecompania, ciudad, pais from clientes_neptuno order by pais, ciudad limit 10;
+
+select nombrecompania, ciudad, pais from clientes_neptuno order by pais, ciudad limit 5 offset 10;
+-- --------------------------------------------------------------------------
+-- ETAPA 2.4
+
+select * from nacimientos where nacionalidad = 'extranjera';
+
+select * from nacimientos where edad_madre < 18 order by edad_madre;
+
+select * from nacimientos where edad_madre = edad_padre;
+
+select * from nacimientos where edad_padre-edad_madre > 40;
+
+select * from clientes_neptuno where pais = 'argentina';
+
+select * from clientes_neptuno where pais <> 'argentina' order by pais;
+
+select * from nacimientos where semanas < 20 order by semanas desc;
+
+select * from nacimientos where sexo = 'femenino' and nacionalidad = 'extranjera' and estado_civil_madre = 'soltera' and edad_madre > 40;
+
+select * from clientes_neptuno where pais = 'argentina' or pais ='venezuela' or pais = 'brasil' order by pais, ciudad;
+
+select * from nacimientos where semanas between 20 and 25 order by semanas;
+
+select * from nacimientos where comuna in (1101, 3201, 5605, 8108, 9204, 13120, 15202) order by comuna;
+
+select * from clientes_neptuno where idcliente like 'c%';
+
+select * from clientes_neptuno where ciudad like 'b____';
+
+select * from nacimientos where hijos_total > 10;
+
+
+

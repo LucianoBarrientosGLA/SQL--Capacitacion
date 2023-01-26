@@ -1,0 +1,10 @@
+use bonus_track;
+
+select * from top_spotify;
+
+select ARTISTA, TITULO, GENERO from top_spotify;
+
+select ARTISTA, TITULO, GENERO from top_spotify order by GENERO;
+
+SELECT ARTISTA, TITULO, GENERO FROM TOP_SPOTIFY
+ORDER BY GENERO, ARTISTA;

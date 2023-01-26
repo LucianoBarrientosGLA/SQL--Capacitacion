@@ -1,0 +1,21 @@
+use libreria ;
+
+select * from autores where ciudad = "Buenos Aires";
+
+select * from libros where precio > "30" order by precio desc;
+
+select * from autores where provincia != "BA" order by provincia;
+
+select * from libros where categoria = "Cuentos" and precio < 20 order by titulo;
+
+select * from libros where categoria = "Novelas" or categoria = "Ensayos" order by titulo;
+
+select * from libros where precio between 20 and 35 order by precio; 
+
+select * from autores where nombre in ("Jorge Luis", "Victoria" , "Ernesto" , "Adolfo") order by nombre;
+
+select * from libros where titulo like "%mundo%" order by titulo; 
+
+select * from libros where titulo like "%de%" order by titulo;
+
+select * from libros where precio is null order by titulo;

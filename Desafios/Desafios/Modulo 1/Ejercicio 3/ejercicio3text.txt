@@ -1,0 +1,94 @@
+create database libreria;
+
+use libreria;
+
+create table autores(
+autor_id VARCHAR(11),
+apellido VARCHAR(40),
+nombre VARCHAR(20),
+telefono VARCHAR(12),
+direccion VARCHAR(40),
+ciudad VARCHAR(20),
+provincia CHAR(2),
+c_postal CHAR(5),
+estado TINYINT(1)
+);
+
+create table ventas(
+local_id CHAR(4),
+factura_nro VARCHAR(20),
+fecha DATETIME,
+cantidad SMALLINT,
+forma_pago VARCHAR(12),
+libro_id VARCHAR(6)
+);
+
+create table locales(
+local_id CHAR(4),
+nombre VARCHAR(40),
+direccion VARCHAR(40),
+ciudad VARCHAR(20),
+provincia CHAR(2),
+c_postal CHAR(5)
+);
+
+create table editoriales(
+editorial_id CHAR(4),
+nombre VARCHAR(40),
+ciudad VARCHAR(20),
+provincia CHAR(2),
+pais VARCHAR(30)
+);
+
+create table libros(
+libro_id VARCHAR(6),
+titulo VARCHAR(80),
+categoria CHAR(12),
+editorial_id CHAR(4),
+precio DOUBLE,
+comentarios VARCHAR(200),
+fecha_publicacion DATETIME
+);
+
+create table libroautor(
+autor_id VARCHAR(11),
+libro_id VARCHAR(6)
+);
+
+create table empleados(
+empleado_id CHAR(9),
+nombre VARCHAR(20),
+apellido VARCHAR(30),
+puesto_id SMALLINT,
+editorial_id CHAR(4),
+fecha_ingreso DATETIME
+);
+
+create table puestos(
+puesto_id SMALLINT,
+descripcion VARCHAR(50)
+);
+
+alter table puestos
+add primary key(puesto_id);
+
+alter table empleados
+add primary key(empleado_id, puesto_id, editorial_id);
+
+alter table libroautor
+add primary key(autor_id, libro_id);
+
+alter table libros
+add primary key(libro_id, editorial_id);
+
+alter table editoriales
+add primary key(editorial_id);
+
+alter table locales
+add primary key(local_id);
+
+alter table ventas
+add primary key(local_id, libro_id);
+
+alter table autores
+add primary key(autor_id);

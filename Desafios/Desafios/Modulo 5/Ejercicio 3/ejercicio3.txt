@@ -1,0 +1,27 @@
+use libreria;
+
+select * from libros where precio >(select avg(precio) from libros) order by titulo;
+
+select * from libros where categoria = 'Novelas' and precio >(select max(precio) from libros where categoria = 'Ensayos') order by precio desc;
+
+select * from empleados where permanencia = (select max(permanencia)from empleados);
+
+select * from empleados where puesto_id = (select max(puesto_id) from empleados);
+
+select libro_id, titulo, categoria, precio_publico,
+case
+when precio_publico < 15 then 'Economico'
+when precio_publico <=30 then 'Regular'
+else 'Deluxe'
+end as tipo from libros where precio_publico is not null order by titulo;
+
+select concat(apellido, ', ', nombre) empleado from empleados where puesto_id = 9
+union
+select concat(apellido, ', ', nombre) from empleados_anteriores where puesto_id = 9 order by empleado;
+
+select v.libro_id, titulo, precio_publico, local_id, factura_nro, cantidad from libros l, ventas v where l.libro_id = v.libro_id order by l.titulo;
+
+select v.libro_id, titulo, precio_publico, local_id, factura_nro, cantidad, round(precio_publico * cantidad, 2) as total from libros l, ventas v
+where l.libro_id = v.libro_id order by l.titulo;
+
+select l.titulo from libros l left join ventas v on l.libro_id = v.libro_id where factura_nro is null order by titulo;

@@ -1,0 +1,11 @@
+use libreria;
+
+create table empleados_anteriores
+select * from empleados
+where apellido in ('THOMAS', 'PEREIRA', 'DEVO');
+delete from empleados
+where apellido in ('THOMAS', 'PEREIRA', 'DEVO');
+
+insert into empleados_anteriores (empleado_id, nombre, apellido, puesto_id , editorial_id, fecha_ingreso, permanencia)
+select empleado_id, nombre, apellido, puesto_id, editorial_id, fecha_ingreso, permanencia from empleados where apellido = 'CRUZ';
+delete from empleados where apellido = 'CRUZ';
